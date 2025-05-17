@@ -51,7 +51,7 @@ export default {
     return {
       prompt: '',
       showConfig: false,
-      apiKey: localStorage.getItem('api_key') || '',
+      apiKey: localStorage.getItem('api_key') || 'sk-MTYyLTExNDg3MzEzMzk1LTE3NDczODU3NDYyODc=',
       tempApiKey: '',
       parsedJson: null,
       activeNames: ['content'],
@@ -71,7 +71,9 @@ export default {
 
       try {
         const res = await axios.post(
-          '/api/llm/v1/chat/completions',
+
+          //'/api/llm/v1/chat/completions',
+            'https://api.scnet.cn/api/llm/v1/chat/completions',
           {
             //model: 'DeepSeek-R1-Distill-Qwen-7B',
             model: 'DeepSeek-R1-Distill-Qwen-32B',
