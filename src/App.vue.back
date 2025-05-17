@@ -1,0 +1,65 @@
+<template>
+  <div style="padding: 16px;">
+    <van-field
+      v-model="prompt"
+      label="问题"
+      placeholder="请输入你的问题"
+      autosize
+      type="textarea"
+      rows="3"
+    />
+    <van-button
+      type="primary"
+      block
+      :loading="loading"
+      @click="sendRequest"
+      style="margin-top: 16px;"
+    >
+      发送请求
+    </van-button>
+
+    <van-divider content-position="left" style="margin-top: 24px;">回复</van-divider>
+    <div v-if="response" style="white-space: pre-wrap; min-height: 100px; padding: 8px; background: #f7f8fa; border-radius: 4px;">
+      {{ response }}
+    </div>
+  </div>
+</template>
+
+<script>
+import { Toast } from 'vant';
+import axios from 'axios';
+
+export default {
+  data() {
+    return {
+      prompt: '',
+      response: '',
+      loading: false,
+    };
+  },
+  methods: {
+    async sendRequest() {
+      if (!this.prompt.trim()) {
+        Toast.fail('请输入问题');
+        return;
+      }
+      this.loading = true;
+      this.response = '';
+      try {
+      const res = await axios.post('/api/llm/v1', { /* 请求体 */ }, {
+  headers: {
+    Authorization: 'Bearer YOUR_TOKEN',
+    'Content-Type': 'application/json'
+  }
+});
+    console.log('接口返回：', res.data);
+      } catch (error) {
+        this.response = '请求出错: ' + error.message;
+      } finally {
+        this.loading = false;
+      }
+    }
+  }
+};
+</script>
+
